@@ -1,5 +1,14 @@
 # theoretical-good
 
+Problems of solution A (fixed by solution B):
+
+- We have to do two requests to get all `goods` with discounts, since `goods` have to idea about `discount`;
+- We can't apply one `discount` to several `goods`. For example, if we have a Black Friday and want to
+  make discount 50% on all `goods`, we'll have to create a separate `discount` for each `good`;
+- The way how discounts are stored is very non-obvious and every discount type requires a separate parser.
+  But, we can come to a single formula for all discounts and in this case we can store discounts using a number
+  of parameters: `value`, `everyItem`, `itemCountInRaw`, `valueType`.
+
 ## Solution A
 
 ### Goods
@@ -15,10 +24,10 @@ id | name   | price
 ### Discounts
 
 ```
-id | goodId     | discountType  | value
-1  | 1 (Milk)   | Fixed         | "70"    - "Price"
-2  | 2 (Bread)  | PricePerCount | "2:350" - "ItemCount:Price"
-3  | 4 (Coffee) | FreeItem      | "4:3"   - "AllItemCount:PriceItemCount"
+id | goodId     | discountType  | value   | condition
+1  | 1 (Milk)   | Fixed         | "70"    | Europe     - "Price"
+2  | 2 (Bread)  | PricePerCount | "2:350" |            - "ItemCount:Price"
+3  | 4 (Coffee) | FreeItem      | "4:3"   |            - "AllItemCount:PriceItemCount"
 ```
 
 ### API
@@ -57,12 +66,7 @@ id | name   | price | discountId
 ### Discounts
 
 ```
-id | goodId     | discountType  | value
-1  | 1 (Milk)   | Fixed         | "70"    - "Price"
-2  | 2 (Bread)  | PricePerCount | "2:350" - "ItemCount:Price"
-3  | 4 (Coffee) | FreeItem      | "4:3"   - "AllItemCount:PriceItemCount"
-
-id | value | everyItem | itemCountInRaw | type       
+id | value | everyItem | itemCountInRaw | valueType       
 1  | 30    | 1         | 1              | number     Milk
 2  | 50    | 2         | 1              | number     Bread
 3  | 100   | 4         | 1              | percent    Coffee
@@ -139,5 +143,5 @@ id | discountType  | value
 id | goodId  | discountId
 1  | 1       | 1
 2  | 2       | 2
-3  | 4       | 3  
+3  | 4       | 3
 ```

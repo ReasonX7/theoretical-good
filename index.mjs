@@ -7,7 +7,7 @@ const calculateFinalPrice = (price, orderedItemCount, discount) => {
     value, everyItem, itemCountInRaw, type,
   } = discount;
 
-  const itemCountWithDiscount = orderedItemCount > everyItem ? Math.floor(orderedItemCount / everyItem) * itemCountInRaw : 0;
+  const itemCountWithDiscount = orderedItemCount >= everyItem ? Math.floor(orderedItemCount / everyItem) * itemCountInRaw : 0;
   const itemCountWithoutDiscount = orderedItemCount - itemCountWithDiscount;
   const itemWithDiscountPrice = itemCountWithDiscount * (type === "percent" ? price - price * (value / 100) : price - value);
 
@@ -62,7 +62,7 @@ console.log();
 // ===================================
 
 const coffeePrice = 50;
-const coffeeCount = 5;
+const coffeeCount = 4;
 const coffeeDiscount = {
   value: 100,
   everyItem: 4,
